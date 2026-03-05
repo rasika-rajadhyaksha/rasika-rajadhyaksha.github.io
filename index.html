@@ -123,7 +123,24 @@ section{padding:6rem 4rem;}
 .sample-card p{font-size:0.82rem;color:var(--mid);line-height:1.65;font-weight:300;margin-bottom:1rem;}
 .s-link{font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--charcoal);text-decoration:none;border-bottom:1.5px solid var(--mint);padding-bottom:1px;transition:color 0.2s;}
 .s-link:hover{color:var(--mint-d);}
-.modal-large{max-width:900px;padding:2.5rem;}
+/* .modal-large{max-width:900px;padding:2.5rem;} */
+.modal-large{
+  max-width:900px;
+  width:90%;
+  padding:2.5rem 2rem;
+  max-height:90vh;
+  overflow-y:auto;
+}
+
+@media(max-width:768px){
+  .modal-large{
+    width:95%;
+    padding:1.5rem 1rem;
+  }
+  .modal-samples-grid{
+    grid-template-columns:1fr;
+  }
+}
 .modal-samples-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
 .modal-sample-card{background:var(--mint-soft);border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
 .modal-sample-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(94,175,138,0.15);}
