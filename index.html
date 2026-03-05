@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rasika Rajadhyaksha</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+.modal{display:none;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;}
+.modal.show{display:flex;}
+.modal-content{background:white;padding:3rem 2.5rem;border-radius:20px;max-width:500px;margin:0 1.5rem;text-align:center;position:relative;}
+.modal-close{position:absolute;top:1rem;right:1.5rem;font-size:1.8rem;cursor:pointer;color:var(--light);line-height:1;}
+.modal-close:hover{color:var(--charcoal);}
+.modal-content h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;margin-bottom:1rem;color:var(--charcoal);}
+.modal-content p{color:var(--mid);line-height:1.8;font-size:0.95rem;}
+:root {
+  --mint:      #7EC8A4;
+  --mint-d:    #5BAF8A;
+  --mint-l:    #B8E4CF;
+  --mint-bg:   #EAF7F0;
+  --mint-soft: #F2FAF6;
+  --sage:      #8FAF96;
+  --sage-bg:   #EDF4EF;
+  --rose:      #C9848A;
+  --cream:     #FAFAF7;
+  --warm-white:#FFFFFF;
+  --charcoal:  #222;
+  --mid:       #555;
+  --light:     #999;
+  --border:    #E4EDE7;
+  --border-d:  #C8DFCF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--charcoal);overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1rem 3.5rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--charcoal);}
+.nav-logo span{color:var(--mint-d);}
+nav ul{list-style:none;display:flex;gap:2rem;align-items:center;}
+nav ul a{text-decoration:none;font-size:0.75rem;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--mid);transition:color 0.2s;}
+nav ul a:hover{color:var(--mint-d);}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden;background:var(--mint-soft);}
+#hero-canvas{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.hero-content{position:relative;z-index:1;max-width:720px;}
+.hero-greeting{font-size:1.1rem;font-weight:300;color:var(--mid);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.8rem;}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,8vw,6.5rem);font-weight:700;line-height:1.0;color:var(--charcoal);margin-bottom:1.2rem;}
+.hero-name em{font-style:italic;color:var(--mint-d);}
+.hero-ticker-wrap{height:2.6rem;overflow:hidden;margin-bottom:1.8rem;}
+.hero-ticker{display:flex;flex-direction:column;animation:ticker 12s linear infinite;}
+.hero-ticker span{height:2.6rem;line-height:2.6rem;font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-style:italic;font-weight:500;color:var(--mint-d);white-space:nowrap;display:block;}
+@keyframes ticker{0%{transform:translateY(0);}20%{transform:translateY(0);}25%{transform:translateY(-2.6rem);}45%{transform:translateY(-2.6rem);}50%{transform:translateY(-5.2rem);}70%{transform:translateY(-5.2rem);}75%{transform:translateY(-7.8rem);}95%{transform:translateY(-7.8rem);}100%{transform:translateY(-10.4rem);}}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.85rem 2rem;border-radius:50px;font-family:'Jost',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.5px;text-decoration:none;cursor:pointer;border:none;transition:transform 0.2s,box-shadow 0.2s;}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.12);}
+.btn-mint{background:var(--mint-d);color:white;}
+.btn-outline{background:transparent;border:2px solid var(--mint-d);color:var(--mint-d);}
+
+/* SHARED */
+section{padding:6rem 4rem;}
+.sec-label{font-size:0.7rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--mint-d);display:flex;align-items:center;gap:0.7rem;margin-bottom:0.7rem;}
+.sec-label::after{content:'';width:40px;height:1.5px;background:var(--mint-l);display:inline-block;}
+.sec-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,4vw,3.2rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem}
+.sec-head{margin-bottom:3.5rem;}
+.bg-white{background:var(--warm-white);}
+.bg-soft{background:var(--mint-soft);}
+
+/* ABOUT */
+#about{background:var(--warm-white);}
+.about-grid{display:grid;grid-template-columns:0.8fr 2fr;gap:4rem;align-items:center;max-width:1200px;margin:0 auto;}
+.about-photo-wrap{position:relative;}
+.about-photo{width:100%;max-width:380px;border-radius:20px;object-fit:cover;aspect-ratio:4/4;display:block;box-shadow:16px 16px 0 var(--mint-l);position:relative;z-index:1;}
+.about-photo-deco{position:absolute;width:100%;max-width:380px;height:100%;border-radius:20px;border:2px dashed var(--mint-l);top:-12px;left:-12px;z-index:0;}
+.about-text p{font-size:0.97rem;line-height:1.9;color:var(--mid);font-weight:300;margin-bottom:1rem;}
+.about-text p strong{color:var(--charcoal);font-weight:500;}
+.about-btns{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;}
+.edu-chips{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.4rem;}
+.edu-chip{font-size:0.75rem;padding:0.35rem 1rem;background:var(--mint-bg);border:1px solid var(--mint-l);border-radius:50px;color:var(--mint-d);font-weight:500;}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;}
+.skill-card{background:white;border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.2rem;text-align:center;transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s;cursor:default;}
+.skill-card:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(94,175,138,0.15);border-color:var(--mint-l);}
+.skill-icon{font-size:1.8rem;margin-bottom:0.5rem;}
+.skill-name{font-weight:600;font-size:0.88rem;color:var(--charcoal);}
+.skill-cat{font-size:0.65rem;color:var(--light);letter-spacing:0.8px;text-transform:uppercase;margin-top:0.2rem;}
+.skill-desc{font-size:0.76rem;color:var(--mid);line-height:1.6;font-weight:300;margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid var(--border);text-align:left;}
+
+/* TECH */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1.2rem;}
+.tech-card{background:white;border:1px solid var(--border);border-radius:16px;padding:1.6rem 1rem;text-align:center;transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s;cursor:default;}
+.tech-card:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(94,175,138,0.15);border-color:var(--mint);}
+.tech-logo{font-size:2.2rem;margin-bottom:0.6rem;line-height:1;display:flex;justify-content:center;align-items:center;height:52px;}
+.tech-logo svg{width:44px;height:44px;}
+.tech-name{font-weight:600;font-size:0.8rem;color:var(--charcoal);}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.8rem;}
+.project-card{background:white;border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:transform 0.25s,box-shadow 0.25s;display:flex;flex-direction:column;}
+.project-card:hover{transform:translateY(-7px);box-shadow:0 20px 45px rgba(0,0,0,0.1);}
+.project-banner{height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.project-body{padding:1.6rem;flex:1;display:flex;flex-direction:column;}
+.project-type{font-size:0.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mint-d);margin-bottom:0.7rem;}
+.project-card h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:0.6rem;color:var(--charcoal);}
+.project-card p{font-size:0.86rem;line-height:1.75;color:var(--mid);font-weight:300;flex:1;}
+.project-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.1rem;}
+.ptag{font-size:0.65rem;padding:0.22rem 0.75rem;background:var(--mint-bg);border:1px solid var(--mint-l);color:var(--mint-d);border-radius:50px;font-weight:500;}
+.project-link{display:inline-flex;align-items:center;gap:0.4rem;margin-top:1rem;font-size:0.75rem;font-weight:600;color:var(--charcoal);text-decoration:none;letter-spacing:0.5px;border-bottom:1.5px solid var(--mint);padding-bottom:1px;align-self:flex-start;transition:color 0.2s;}
+.project-link:hover{color:var(--mint-d);}
+
+/* WORK SAMPLES */
+.samples-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.4rem;}
+.sample-card{background:white;border:1px solid var(--border);border-radius:16px;padding:1.8rem;position:relative;overflow:hidden;transition:transform 0.25s,box-shadow 0.25s;}
+.sample-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--mint),var(--mint-l));}
+.sample-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(94,175,138,0.15);}
+.sample-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--mint-l);line-height:1;margin-bottom:0.4rem;}
+.sample-brand{font-size:0.63rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--light);margin-bottom:0.3rem;}
+.sample-card h3{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;margin-bottom:0.5rem;}
+.sample-card p{font-size:0.82rem;color:var(--mid);line-height:1.65;font-weight:300;margin-bottom:1rem;}
+.s-link{font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--charcoal);text-decoration:none;border-bottom:1.5px solid var(--mint);padding-bottom:1px;transition:color 0.2s;}
+.s-link:hover{color:var(--mint-d);}
+.modal-large{max-width:900px;padding:2.5rem;}
+.modal-samples-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.modal-sample-card{background:var(--mint-soft);border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
+.modal-sample-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(94,175,138,0.15);}
+.modal-sample-card .sample-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--mint-l);line-height:1;margin-bottom:0.3rem;}
+.modal-sample-card .sample-brand{font-size:0.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--light);margin-bottom:0.3rem;}
+.modal-sample-card h4{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;margin-bottom:0.4rem;}
+.modal-sample-card p{font-size:0.82rem;color:var(--mid);line-height:1.6;margin-bottom:0.8rem;}
+.sample-status{display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.5px;padding:0.4rem 0.9rem;border-radius:50px;margin-top:0.5rem;}
+.sample-status.available{background:var(--mint-bg);color:var(--mint-d);border:1px solid var(--mint-l);}
+.sample-status.locked{background:rgba(0,0,0,0.05);color:var(--light);border:1px solid var(--border);}
+@media(max-width:768px){.modal-samples-grid{grid-template-columns:1fr;}}
+
+/* TABS */
+#extras{background:var(--mint-soft);}
+.tabs-nav{display:flex;gap:0;margin-bottom:2.5rem;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab-btn{padding:0.8rem 1.8rem;font-family:'Jost',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:none;border:none;cursor:pointer;color:var(--light);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color 0.2s,border-color 0.2s;}
+.tab-btn.active{color:var(--mint-d);border-bottom-color:var(--mint-d);}
+.tab-btn:hover{color:var(--mint-d);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ACHIEVEMENTS */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem;}
+.ach-card{background:white;border:1px solid var(--border);border-radius:16px;padding:1.4rem;border-left:3px solid transparent;transition:transform 0.2s,box-shadow 0.2s,border-left-color 0.2s;}
+.ach-card:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(94,175,138,0.12);border-left-color:var(--mint);}
+.ach-icon{font-size:1.4rem;margin-bottom:0.4rem;}
+.ach-card h4{font-size:0.88rem;font-weight:600;color:var(--charcoal);margin-bottom:0.15rem;line-height:1.4;}
+.ach-org{font-size:0.7rem;color:var(--mint-d);font-weight:500;margin-bottom:0.3rem;}
+.ach-card p{font-size:0.78rem;color:var(--mid);line-height:1.6;font-weight:300;}
+
+/* HOBBIES */
+.hobbies-wrap{display:flex;flex-wrap:wrap;gap:1rem;}
+.hobby-card{display:flex;flex-direction:column;gap:0.5rem;background:white;border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.5rem;width:calc(33.33% - 0.7rem);min-width:240px;transition:background 0.2s,border-color 0.2s,transform 0.2s;}
+.hobby-card:hover{background:var(--mint-bg);border-color:var(--mint-l);transform:translateY(-3px);box-shadow:0 10px 26px rgba(94,175,138,0.12);}
+.hobby-top{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.2rem;}
+.hobby-top span{font-size:1.5rem;}
+.hobby-top strong{font-size:0.92rem;font-weight:600;color:var(--charcoal);}
+.hobby-sub{font-size:0.8rem;color:var(--mid);line-height:1.65;font-weight:300;}
+
+/* CERTS */
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;}
+.cert-card{background:white;border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;flex-direction:column;transition:transform 0.2s,box-shadow 0.2s;}
+.cert-card:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(94,175,138,0.12);}
+.cert-badge{font-size:1.4rem;margin-bottom:0.5rem;}
+.cert-issuer{font-size:0.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--mint-d);margin-bottom:0.25rem;}
+.cert-card h4{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;margin-bottom:0.4rem;color:var(--charcoal);}
+.cert-card p{font-size:0.79rem;color:var(--mid);line-height:1.6;font-weight:300;flex:1;margin-bottom:0.9rem;}
+.cert-link{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.7rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--mint-d);text-decoration:none;border:1.5px solid var(--mint-l);border-radius:50px;padding:0.3rem 0.85rem;align-self:flex-start;transition:all 0.2s;}
+.cert-link:hover{background:var(--mint-bg);border-color:var(--mint-d);}
+.cert-year{font-size:0.67rem;color:var(--light);margin-top:0.4rem;}
+
+/* RECOMMENDATIONS */
+#recommendations{background:var(--warm-white);}
+.lor-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.lor-card{background:var(--mint-soft);border:1px solid var(--border);border-radius:18px;padding:2.2rem;display:flex;flex-direction:column;transition:transform 0.2s,box-shadow 0.2s;}
+.lor-card:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(94,175,138,0.12);}
+.lor-quote{font-family:'Cormorant Garamond',serif;font-size:4.5rem;line-height:0.8;color:var(--mint-l);margin-bottom:0.8rem;display:block;}
+.lor-text{font-size:0.87rem;line-height:1.88;color:var(--mid);font-weight:300;flex:1;}
+.lor-text p{margin-bottom:0.75rem;}
+.lor-text p:last-child{margin-bottom:0;}
+.lor-footer{margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.lor-sig{display:flex;align-items:center;gap:0.8rem;}
+.lor-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1rem;color:white;flex-shrink:0;}
+.av-mint{background:linear-gradient(135deg,var(--mint-d),var(--mint));}
+.av-sage{background:linear-gradient(135deg,var(--sage),var(--mint-d));}
+.lor-name{font-weight:600;font-size:0.88rem;color:var(--charcoal);}
+.lor-role{font-size:0.73rem;color:var(--light);margin-top:0.1rem;}
+.lor-pdf-link{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.7rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--mint-d);text-decoration:none;border:1.5px solid var(--mint-l);border-radius:50px;padding:0.35rem 0.9rem;transition:all 0.2s;white-space:nowrap;}
+.lor-pdf-link:hover{background:var(--mint-bg);border-color:var(--mint-d);}
+.ach-cert-link{display:inline-flex;align-items:center;gap:0.3rem;margin-top:0.7rem;font-size:0.7rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--mint-d);text-decoration:none;border-bottom:1.5px solid var(--mint-l);padding-bottom:1px;transition:border-color 0.2s,color 0.2s;}
+.ach-cert-link:hover{color:var(--mint-d);border-color:var(--mint-d);}
+
+/* CONTACT */
+#contact{background:var(--charcoal);padding:7rem 4rem;position:relative;overflow:hidden;}
+#contact::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(126,200,164,0.12) 0%,transparent 70%);pointer-events:none;}
+.contact-inner{display:grid;grid-template-columns:1fr 1.3fr;gap:4rem;align-items:start;position:relative;z-index:1;max-width:1100px;margin:0 auto;}
+.contact-left .sec-label{color:var(--mint-l);}
+.contact-left .sec-label::after{background:rgba(126,200,164,0.3);}
+.contact-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.4rem);font-weight:700;color:white;margin-bottom:1rem;}
+.contact-left h2 em{font-style:italic;color:var(--mint-l);}
+.contact-left>p{color:rgba(255,255,255,0.45);font-size:0.9rem;line-height:1.8;font-weight:300;margin-bottom:2rem;}
+.contact-info-items{display:flex;flex-direction:column;gap:1.1rem;margin-bottom:1.8rem;}
+.contact-info-item{display:flex;align-items:center;gap:1rem;}
+.contact-info-icon{width:40px;height:40px;border-radius:50%;background:rgba(126,200,164,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;}
+.contact-info-label{font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--mint-l);margin-bottom:0.1rem;}
+.contact-info-value{font-size:0.88rem;color:rgba(255,255,255,0.7);font-weight:300;text-decoration:none;}
+.contact-info-value:hover{color:var(--mint-l);}
+.contact-socials{display:flex;gap:0.8rem;}
+.social-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1rem;transition:all 0.2s;color:rgba(255,255,255,0.6);}
+.social-btn:hover{background:var(--mint-d);border-color:var(--mint-d);color:white;transform:translateY(-2px);}
+.contact-form-wrap{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:2.2rem;backdrop-filter:blur(8px);}
+.contact-form-wrap h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:white;margin-bottom:1.5rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:0.4rem;}
+.form-group input,.form-group textarea{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:0.8rem 1rem;font-family:'Jost',sans-serif;font-size:0.88rem;color:white;outline:none;transition:border-color 0.2s;resize:none;}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,0.25);}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--mint);}
+.form-submit{width:100%;padding:0.95rem;border-radius:50px;background:var(--mint-d);color:white;font-family:'Jost',sans-serif;font-size:0.88rem;font-weight:600;letter-spacing:0.5px;border:none;cursor:pointer;transition:all 0.25s;margin-top:0.5rem;}
+.form-submit:hover{background:var(--mint);transform:translateY(-2px);box-shadow:0 8px 24px rgba(91,175,138,0.4);}
+.form-success{display:none;text-align:center;padding:2rem;}
+.form-success .check{font-size:3rem;margin-bottom:0.8rem;}
+
+footer{background:#111;text-align:center;padding:1.4rem;color:rgba(255,255,255,0.2);font-size:0.75rem;}
+footer span{color:var(--mint);}
+
+/* FADE UP */
+.fu{opacity:0;transform:translateY(26px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.fu.vis{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}
+  nav ul{display:none;}
+  section{padding:4rem 1.5rem;}
+  .about-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .about-photo-wrap{display:flex;justify-content:center;}
+  .about-photo{max-width:280px;}
+  .about-photo-deco{max-width:280px;}
+  .lor-grid{grid-template-columns:1fr;}
+  .contact-inner{grid-template-columns:1fr;gap:2.5rem;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Rasika <span>R.</span></div>
+  <ul>
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#extras">More</a></li>
+    <li><a href="#recommendations">Recommendations</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-greeting">Hi, I am</div>
+    <h1 class="hero-name">Rasika<br><em>Rajadhyaksha</em></h1>
+    <div class="hero-ticker-wrap">
+      <div class="hero-ticker">
+        <span>Brand Strategist</span>
+        <span>Data Analyst</span>
+        <span>Marketing Strategist</span>
+        <span>Software Developer</span>
+        <span>Brand Strategist</span>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-mint">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Contact Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-photo-wrap fu">
+      <div class="about-photo-deco"></div>
+      <img src="rasika.jpg" alt="Rasika Rajadhyaksha" class="about-photo">
+    </div>
+    <div class="about-text">
+      <div class="sec-label fu">About Me</div>
+      <h2 class="sec-h2 fu">The Story So Far</h2>
+      <div class="fu">
+	    <p>I work at the intersection of <strong>data, strategy, and human behavior.</p>
+		<p>My career began in <strong>analytics</strong>, where structured thinking, systems, and numbers shaped the way I approach problems. Over time, curiosity about the people behind those numbers led me into <strong>brand and communication strategy</strong>, working with clients in FMCG, beauty, real estate, financial services and other categories. An MBA in Marketing further strengthened my understanding of <strong>consumer psychology</strong>, <strong>positioning</strong>, and <strong>long-term brand building</strong>.</p> 
+		<p>Drawn to complex questions and evolving markets, I’m particularly interested in building brands that combine clarity, cultural relevance, and sustainable growth; strategies that are both commercially sound and meaningfully resonant.</p>
+		<p>Outside of work, I’m a trained classical singer, a painter, an avid reader, and lifelong learner, constantly exploring ideas across business, psychology, and culture but also can be often found scrolling through social media as much for insight as for entertainment.</p>
+        <!--<p>I'm a <strong>marketing strategist and data analyst</strong> with a background that doesn't fit neatly into one box — and I've found that's actually the most useful thing about me. I spent three years building technical depth in data engineering and analytics at <strong>Capgemini</strong>, then moved into brand and communication strategy at <strong>VML India (WPP Group)</strong>, working across FMCG, luxury, real estate, and finance categories.</p>
+        <p>What ties it together is a habit of <strong>asking better questions</strong> — of data, of briefs, of categories. Currently completing an <strong>MBA in Marketing</strong>, sharpening the strategic and creative side of that equation.</p>--!>
+        <div class="edu-chips">
+          <span class="edu-chip">MBA Marketing — VESIM '26 · CGPA 8.38</span>
+          <span class="edu-chip">B.E. Computer Engg — VIT '21 · CGPA 7.33</span>
+          <span class="edu-chip">Mumbai, India</span>
+        </div>
+        <div class="about-btns">
+          <a href="#contact" class="btn btn-mint">Get In Touch</a>
+          <a href="resume.pdf" class="btn btn-outline" target="_blank">View Resume</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="bg-soft">
+  <div class="sec-head fu">
+    <div class="sec-label">Skillset</div>
+    <h2 class="sec-h2">What I Bring<br>to the Table</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card fu"><div class="skill-icon">🧠</div><div class="skill-name">Consumer Insights</div><div class="skill-cat">Strategy</div><div class="skill-desc">Synthesised consumer behaviour research, cultural trends, and category dynamics into insight narratives that shaped brand positioning.</div></div>
+    <div class="skill-card fu"><div class="skill-icon">📣</div><div class="skill-name">Brand Strategy</div><div class="skill-cat">Marketing</div><div class="skill-desc">Developed brand and communication strategy across FMCG, beauty, finance, and real estate; from brief to deck to creative handoff.</div></div>
+    <div class="skill-card fu"><div class="skill-icon">📈</div><div class="skill-name">Campaign Analysis</div><div class="skill-cat">Marketing</div><div class="skill-desc">Tracked and evaluated campaign performance, competitor movement, and audience response to inform ongoing strategic decisions.</div></div>
+    <div class="skill-card fu"><div class="skill-icon">📉</div><div class="skill-name">Data Visualisation</div><div class="skill-cat">Analytics</div><div class="skill-desc">Built dashboards and visual reports using Tableau to communicate complex data clearly to non-technical stakeholders.</div></div>
+    <div class="skill-card fu"><div class="skill-icon">🤝</div><div class="skill-name">Leadership & Negotiation</div><div class="skill-cat">Soft Skills</div><div class="skill-desc">Led teams in academic and extracurricular settings; coordinated cross-functional deliverables across global and local stakeholders.</div></div>
+    <div class="skill-card fu"><div class="skill-icon">🔍</div><div class="skill-name">Problem Solving</div><div class="skill-cat">Core Expertise</div><div class="skill-desc">Comfortable working through ambiguous briefs and messy data; trained to find the real question before jumping to the answer.</div></div>
+	<div class="skill-card fu"><div class="skill-icon">✍️</div><div class="skill-name">Content Strategy</div><div class="skill-cat">Creative</div><div class="skill-desc">Crafted content strategy and creation for college's social media campaigns, balancing creative intent with audience insight.</div></div>
+    <div class="skill-card fu"><div class="skill-icon">🌐</div><div class="skill-name">Cross-functional Collaboration</div><div class="skill-cat">Teamwork</div><div class="skill-desc">Worked across creative, account, and tech teams, bridging the gap between analytical rigour and strategic storytelling.</div></div>
+	<div class="skill-card fu"><div class="skill-icon">📊</div><div class="skill-name">Data Analysis</div><div class="skill-cat">Core Expertise</div><div class="skill-desc">Managed and analysed large-scale datasets for international clients, cleaning, structuring, and surfacing patterns that informed business decisions.</div></div>
+    <div class="skill-card fu"><div class="skill-icon">🔄</div><div class="skill-name">ETL & Automation</div><div class="skill-cat">Technical</div><div class="skill-desc">Engineered automated ETL pipelines and job scheduling using Informatica and Teradata for broadband network data at scale.</div></div>
+  </div>
+</section>
+
+<!-- TECHNOLOGIES & TOOLS -->
+<section id="tools" class="bg-white">
+  <div class="sec-head fu">
+    <div class="sec-label">Technologies & Tools</div>
+    <h2 class="sec-h2">What I can Work With</h2>
+  </div>
+  <div class="tech-grid">
+	<div class="tech-card fu"><div class="tech-logo"><i class="fab fa-google" style="font-size:44px;color:#F9AB00;"></i></div><div class="tech-name">Google Analytics</div></div>
+	<div class="tech-card fu"><div class="tech-logo"><i class="fas fa-chart-line" style="font-size:44px;color:#0ACF83;"></i></div><div class="tech-name">SEO</div></div>
+    <div class="tech-card fu"><div class="tech-logo"><i class="fas fa-share-alt" style="font-size:44px;color:#00AEEF;"></i></div><div class="tech-name">Hootsuite</div></div>
+    <div class="tech-card fu"><div class="tech-logo"><i class="fas fa-file-excel" style="font-size:44px;color:#217346;"></i></div><div class="tech-name">Excel</div></div>
+    <div class="tech-card fu"><div class="tech-logo"><i class="fas fa-file-powerpoint" style="font-size:44px;color:#C43E1C;"></i></div><div class="tech-name">PowerPoint</div></div>
+    <div class="tech-card fu"><div class="tech-logo"><i class="fas fa-chart-bar" style="font-size:44px;color:#F2C811;"></i></div><div class="tech-name">Power BI</div></div>
+	<div class="tech-card fu"><div class="tech-logo"><i class="fas fa-chart-line" style="font-size:44px;color:#E97627;"></i></div><div class="tech-name">Tableau</div></div>
+	<div class="tech-card fu"><div class="tech-logo"><i class="fab fa-html5" style="font-size:44px;color:#E44D26;"></i></div><div class="tech-name">HTML / CSS</div></div>
+	<div class="tech-card fu"><div class="tech-logo"><i class="fas fa-database" style="font-size:44px;color:#336791;"></i></div><div class="tech-name">SQL/MySQL</div></div>
+    <div class="tech-card fu"><div class="tech-logo"><i class="fas fa-project-diagram" style="font-size:44px;color:#FF5A00;"></i></div><div class="tech-name">Informatica</div></div>
+	<!--<div class="tech-card fu"><div class="tech-logo"><i class="fas fa-database" style="font-size:44px;color:#4479A1;"></i></div><div class="tech-name">MySQL</div></div>--!>
+	<div class="tech-card fu"><div class="tech-logo"><i class="fab fa-js" style="font-size:44px;color:#F7DF1E;"></i></div><div class="tech-name">JavaScript</div></div>
+	<div class="tech-card fu"><div class="tech-logo"><i class="fas fa-brain" style="font-size:44px;color:#8B5CF6;"></i></div><div class="tech-name">Machine Learning</div></div>
+	<div class="tech-card fu"><div class="tech-logo"><i class="fas fa-robot" style="font-size:44px;color:#10B981;"></i></div><div class="tech-name">Generative AI</div></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="bg-soft">
+  <div class="sec-head fu">
+    <div class="sec-label">My Work & Projects</div>
+    <h2 class="sec-h2">Things I've<br>Built & Strategised</h2>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card fu">
+      <div class="project-banner" style="background:linear-gradient(135deg,#2d4a3e,#0d2418);">
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect x="60" y="40" width="110" height="140" rx="8" fill="rgba(255,255,255,0.08)" stroke="#7EC8A4" stroke-width="1.5"/><text x="115" y="57" text-anchor="middle" font-size="9" fill="#7EC8A4" font-family="Arial" font-weight="bold">BRIEF</text><line x1="75" y1="65" x2="155" y2="65" stroke="#B8E4CF" stroke-width="2" opacity="0.7"/><line x1="75" y1="80" x2="155" y2="80" stroke="#B8E4CF" stroke-width="1.5" opacity="0.5"/><line x1="75" y1="93" x2="140" y2="93" stroke="#B8E4CF" stroke-width="1.5" opacity="0.5"/><line x1="75" y1="106" x2="150" y2="106" stroke="#B8E4CF" stroke-width="1.5" opacity="0.4"/><path d="M185 110 L215 110" stroke="#7EC8A4" stroke-width="2.5" stroke-linecap="round"/><polygon points="215,105 225,110 215,115" fill="#7EC8A4"/><circle cx="285" cy="90" r="35" fill="rgba(126,200,164,0.12)" stroke="#7EC8A4" stroke-width="2"/><path d="M275 80 Q285 65 295 80 L295 95 Q285 100 275 95 Z" fill="#7EC8A4" opacity="0.8"/><line x1="279" y1="100" x2="291" y2="100" stroke="#B8E4CF" stroke-width="2"/><line x1="281" y1="105" x2="289" y2="105" stroke="#B8E4CF" stroke-width="2"/></svg>
+      </div>
+      <div class="project-body">
+        <div class="project-type">Brand Strategy · VML India (WPP Group)</div>
+        <h3>Strategic Decks & Creative Briefs</h3>
+        <p>Planning and Strategy work across FMCG, beauty & wellness, finance, and real estate brands. Translating consumer behaviour research and competitive intelligence into decks that creative teams could actually use.</p>
+        <div class="project-tags"><span class="ptag">Consumer Research</span><span class="ptag">Insight Mining</span><span class="ptag">Brand Planning</span><span class="ptag">Creative Briefs</span></div>
+		<a href="#" onclick="openModal(); return false;" class="project-link">View Work Samples</a>
+        <!--<a href="#work-samples" class="project-link">View Work Samples</a>--!>
+      </div>
+    </div>
+    <div class="project-card fu">
+      <div class="project-banner" style="background:linear-gradient(135deg,#1e2d40,#0d1520);">
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="70" width="80" height="60" rx="8" fill="rgba(126,200,164,0.15)" stroke="#7EC8A4" stroke-width="1.5"/><text x="70" y="96" text-anchor="middle" font-size="8" fill="#B8E4CF" font-family="Arial">SOURCE</text><text x="70" y="110" text-anchor="middle" font-size="8" fill="#7EC8A4" font-family="Arial" font-weight="bold">DATA</text><path d="M110 100 L148 100" stroke="#7EC8A4" stroke-width="2" stroke-dasharray="4,3" opacity="0.8"/><polygon points="148,95 158,100 148,105" fill="#7EC8A4" opacity="0.8"/><rect x="160" y="60" width="80" height="80" rx="8" fill="rgba(126,200,164,0.25)" stroke="#7EC8A4" stroke-width="2"/><text x="200" y="88" text-anchor="middle" font-size="8" fill="#B8E4CF" font-family="Arial">TRANSFORM</text><circle cx="200" cy="112" r="10" fill="none" stroke="#7EC8A4" stroke-width="2"/><circle cx="200" cy="112" r="4" fill="#7EC8A4"/><path d="M240 100 L278 100" stroke="#7EC8A4" stroke-width="2" stroke-dasharray="4,3" opacity="0.8"/><polygon points="278,95 288,100 278,105" fill="#7EC8A4" opacity="0.8"/><rect x="290" y="70" width="80" height="60" rx="8" fill="rgba(126,200,164,0.15)" stroke="#7EC8A4" stroke-width="1.5"/><text x="330" y="96" text-anchor="middle" font-size="8" fill="#B8E4CF" font-family="Arial">LOAD</text><rect x="305" y="104" width="50" height="5" rx="2" fill="#7EC8A4" opacity="0.7"/><rect x="305" y="113" width="35" height="5" rx="2" fill="#7EC8A4" opacity="0.5"/></svg>
+      </div>
+      <div class="project-body">
+        <div class="project-type">Data Engineering · Capgemini</div>
+        <h3>ETL Pipeline Automation</h3>
+        <p>Engineered and automated ETL pipelines and job scheduling for a broadband network client. Large-scale customer data, cross-border teams, tight timelines. Also worked on redesigning of an internal employee portal using MVC architecture.</p>
+        <div class="project-tags"><span class="ptag">Informatica</span><span class="ptag">Teradata</span><span class="ptag">Tableau</span><span class="ptag">SQL</span><span class="ptag">MVC</span></div>
+      </div>
+    </div>
+	<div class="project-card fu">
+      <div class="project-banner" style="background:linear-gradient(135deg,#1a1a2e,#0f3460);">
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><circle cx="150" cy="100" r="70" fill="none" stroke="#7EC8A4" stroke-width="3" opacity="0.6"/><circle cx="150" cy="100" r="50" fill="none" stroke="#B8E4CF" stroke-width="1.5" opacity="0.4"/><line x1="205" y1="155" x2="240" y2="185" stroke="#7EC8A4" stroke-width="6" stroke-linecap="round"/><circle cx="120" cy="90" r="12" fill="#7EC8A4" opacity="0.8"/><path d="M114 93 Q120 99 126 93" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="165" cy="105" r="12" fill="#C9848A" opacity="0.8"/><path d="M159 109 Q165 103 171 109" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="140" cy="70" r="12" fill="#F6D98A" opacity="0.8"/><line x1="134" y1="73" x2="146" y2="73" stroke="white" stroke-width="2" stroke-linecap="round"/><rect x="265" y="140" width="14" height="40" rx="3" fill="#7EC8A4" opacity="0.9"/><rect x="285" y="120" width="14" height="60" rx="3" fill="#B8E4CF" opacity="0.9"/><rect x="305" y="100" width="14" height="80" rx="3" fill="#7EC8A4" opacity="0.7"/><rect x="325" y="130" width="14" height="50" rx="3" fill="#5BAF8A" opacity="0.9"/></svg>
+      </div>
+      <div class="project-body">
+        <div class="project-type">Research · NLP · Final Year Project</div>
+        <h3>Reputation Monitoring via Sentiment Analysis</h3>
+        <p>Built a real-time brand reputation tracker using Flask and NLTK. Feed it a keyword, it pulls tweets and surfaces sentiment through dynamic charts and word clouds. Processed over 1 million tweets.</p>
+        <div class="project-tags"><span class="ptag">Python</span><span class="ptag">Flask</span><span class="ptag">NLTK</span><span class="ptag">Twitter API</span><span class="ptag">Bootstrap</span><span class="ptag">HTML</span><span class="ptag">CSS</span><span class="ptag">JavaScript</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK SAMPLES -->
+<!--<section id="work-samples" class="bg-white">
+  <div class="sec-head fu">
+    <div class="sec-label">Work Samples</div>
+    <h2 class="sec-h2">Decks & Briefs</h2>
+  </div>
+  <div class="samples-grid">
+    <div class="sample-card fu"><div class="sample-num">01</div><div class="sample-brand">Yardley · Beauty &amp wellness</div><h3>Brand Strategy Deck</h3><p>Cultural trend mapping and consumer behaviour synthesis for one of India's most loved food brands.</p><a href="YOUR_GOOGLE_DRIVE_LINK_1" class="s-link" target="_blank">View Deck ↗</a></div>
+    <div class="sample-card fu"><div class="sample-num">02</div><div class="sample-brand">RMZ / Delhi Redz</div><h3>Creative Brief</h3><p>Audience insight and category positioning distilled into a sharp creative direction for the team.</p><a href="YOUR_GOOGLE_DRIVE_LINK_2" class="s-link" target="_blank">View Brief ↗</a></div>
+    <div class="sample-card fu"><div class="sample-num">03</div><div class="sample-brand">BMW / Godrej Interio</div><h3>Category &amp; Competitive Landscape</h3><p>Category deep-dive with competitive movement tracking and strategic opportunity mapping.</p><a href="YOUR_GOOGLE_DRIVE_LINK_3" class="s-link" target="_blank">View Deck ↗</a></div>
+    <div class="sample-card fu"><div class="sample-num">04</div><div class="sample-brand">Haldiram's · FMCG</div><h3>Consumer Insight Narrative</h3><p>Raw consumer data transformed into a story framework for sharper brand positioning.</p><a href="YOUR_GOOGLE_DRIVE_LINK_4" class="s-link" target="_blank">View Deck ↗</a></div>
+  </div>
+</section>
+--!>
+<!-- Work Modal -->
+<div id="workModal" class="modal" onclick="closeModal()">
+  <div class="modal-content modal-large" onclick="event.stopPropagation()">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <h3>Work Samples</h3>
+    <p style="color:var(--mid);margin-bottom:2rem;font-size:0.9rem;">Selected brand strategy work from VML India</p>
+    
+    <div class="modal-samples-grid">
+      <div class="modal-sample-card" onclick="window.open('https://drive.google.com/file/d/1o2cL5lDWbcQWJPqhmapM1Sw46ookO9xc/view?usp=drivesdk', '_blank')">
+        <div class="sample-num">01</div>
+        <div class="sample-brand">Yardley · Beauty & Wellness</div>
+        <h4>Brand Strategy Deck</h4>
+        <p>Raw consumer data transformed into potential growth levers with a story framework for sharper brand positioning.</p>
+        <span class="sample-status available">📄 View Deck</span>
+      </div>
+      
+	  <div class="modal-sample-card" onclick="window.open('https://drive.google.com/file/d/1VIWVtt-NJTj5ZjNaJCj-hW1BII8NbhL_/view?usp=drivesdk', '_blank')">
+        <div class="sample-num">02</div>
+        <div class="sample-brand">Haldiram's · FMCG</div>
+        <h4>Consumer Insight Narrative</h4>
+        <p>Cultural trend mapping and consumer behaviour synthesis for one of India's most loved food brands.</p>
+        <span class="sample-status available">📄 View Deck</span>
+      </div>
+      
+      <div class="modal-sample-card" onclick="showRequestModal()">
+        <div class="sample-num">03</div>
+        <div class="sample-brand">BMW / Godrej Interio</div>
+        <h4>Category & Competitive Landscape</h4>
+        <p>Category deep-dive with competitive movement tracking.</p>
+        <span class="sample-status locked">🔒 Request Access</span>
+      </div>
+      
+      <div class="modal-sample-card" onclick="showRequestModal()">
+        <div class="sample-num">04</div>
+        <div class="sample-brand">RMZ / Delhi Redz</div>
+        <h4>Creative Brief</h4>
+        <p>Audience insight and category positioning for creative direction.</p>
+        <span class="sample-status locked">🔒 Request Access</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Request Modal -->
+<div id="requestModal" class="modal" onclick="closeRequestModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <span class="modal-close" onclick="closeRequestModal()">&times;</span>
+    <h3>🔒 Confidential Work Sample</h3>
+    <p>This work sample contains confidential client information and is available upon verified request. Please <a href="#contact" onclick="closeRequestModal(); closeModal();" style="color:var(--mint-d);font-weight:600;">get in touch</a> to discuss access.</p>
+  </div>
+</div>
+
+<!-- ACHIEVEMENTS / HOBBIES / CERTIFICATIONS -->
+<section id="extras">
+  <div class="sec-head fu">
+    <div class="sec-label">More About Me</div>
+    <h2 class="sec-h2">Beyond the<br>Brief</h2>
+  </div>
+  <div class="tabs-nav">
+    <button class="tab-btn" onclick="switchTab(event,'achievements')">🏆 Achievements</button>
+    <button class="tab-btn" onclick="switchTab(event,'hobbies')">🎨 Hobbies</button>
+    <button class="tab-btn" onclick="switchTab(event,'certifications')">📜 Certifications</button>
+  </div>
+
+  <!-- Achievements -->
+  <div class="tab-panel" id="tab-achievements">
+    <div class="ach-grid">
+      <div class="ach-card fu"><div class="ach-icon">🏆</div><h4>National B-Plan Championship <br> Finalist, Phase I</h4><div class="ach-org">IIM Bangalore · MakeIntern · Feb 2025</div><p>Represented VESIM at the 13th National B-Plan Championship at Unmaad, IIM Bangalore.</p><a href="iimb_bplan_cert.jpg" class="ach-cert-link" target="_blank">📜 View Certificate</a></div>
+      <div class="ach-card fu"><div class="ach-icon">🥈</div><h4>Runner-Up <br>Sell On Fundraising Initiative</h4><div class="ach-org">Seva Sahayog NGO × VESIM · 2025</div><p>Raised ₹22,800 and contributed 38 school kits for underprivileged students. Second-highest individual contribution among 300+ participants.</p><a href="sell_on_initiative_cert.jpg" class="ach-cert-link" target="_blank">📜 View Certificate</a></div>
+	  <div class="ach-card fu"><div class="ach-icon">🎙️</div><h4>Main Coordinator <br>TiES Conference</h4><div class="ach-org">International Research Paper Conference · VESIM · 2025</div><p>Coordinated logistics and editorial review for an international research paper conference at VESIM.</p></div>
+      <!-- <div class="ach-card fu"><div class="ach-icon">🎉</div><h4>Decoration Head — FETÈ Alumni Reunion</h4><div class="ach-org">VESIM</div><p>Led the décor and visual experience for VESIM's annual alumni reunion event.</p></div> --!>
+      <div class="ach-card fu"><div class="ach-icon">🎭</div><h4>Organising Committee <br>Mr. &amp; Ms. VESIM, Alchemize &amp HABITia </h4><div class="ach-org">VESIM</div><p>Core team behind the college's flagship events. Oversaw and assisted with end-to-end planning and execution.</p></div> 
+      <div class="ach-card fu"><div class="ach-icon">📖</div><h4>Editorial Team <br> Vrittant &amp; Echo</h4><div class="ach-org">VESIM Magazine &amp; Newsletter · 2024–2025</div><p>Editing and proofreading for the college magazine and newsletter.</p></div>
+      <div class="ach-card fu"><div class="ach-icon">📱</div><h4>Social Media Team</h4><div class="ach-org">VESIM · 2024–2025</div><p>Managing VESIM's official social media — content creation, scheduling, and maintaining a consistent brand voice.</p></div>
+	  <div class="ach-card fu"><div class="ach-icon">🎤</div><h4>Winner <br>Sanskruti Kala Darpan</h4><div class="ach-org">District Level Singing Competition</div><p>Won a district-level classical singing competition... music has been a consistent thread through life.</p></div>
+	  <!--<div class="ach-card fu"><div class="ach-icon">🎤</div><h4>Winner — Sanskruti Kala Darpan</h4><div class="ach-org">District Level Singing Competition</div><p>Won a district-level classical singing competition — music has been a consistent thread through life.</p><a href="sanskruti_kala_darpan.jpg" class="ach-cert-link" target="_blank">📜 View Certificate</a></div>--!>
+      <div class="ach-card fu"><div class="ach-icon">🎵</div><h4>Creative Committee &amp; Performer</h4><div class="ach-org">Vidyalankar Student Council</div><p>On the creative committee and performed at NAAC cultural events.</p></div>
+    </div>
+  </div>
+
+  <!-- Hobbies -->
+  <div class="tab-panel" id="tab-hobbies">
+    <div class="hobbies-wrap">
+      <div class="hobby-card fu"><div class="hobby-top"><span>🎵</span><strong>Music &amp; Singing</strong></div><div class="hobby-sub">Classically trained vocalist who has won multiple vocal music competitions. Music isn't just a hobby, it's the thing that was always there first.</div></div>
+      <div class="hobby-card fu"><div class="hobby-top"><span>📚</span><strong>Books</strong></div><div class="hobby-sub">Read over 100 books and still counting... lost track somewhere along the way and decided that was fine. Fiction, non-fiction, anything with a good storyline and writing.</div></div>
+      <div class="hobby-card fu"><div class="hobby-top"><span>🎨</span><strong>Art</strong></div><div class="hobby-sub">Acrylic canvas paintings and pencil sketches, mostly made at odd hours. Art has always had a very calming effect on me.</div></div>
+      <div class="hobby-card fu"><div class="hobby-top"><span>♟️</span><strong>Chess</strong></div><div class="hobby-sub">Won chess tournaments at age 6. Still playing online years later, slower, more thoughtful, purely for the pleasure of it. Amateur by choice now.</div></div>
+      <div class="hobby-card fu"><div class="hobby-top"><span>💻</span><strong>Technology</strong></div><div class="hobby-sub">Genuinely curious about how things are built. From AI to product design to whatever's being talked about this week. Keeps the analyst brain fed.</div></div>
+      <div class="hobby-card fu"><div class="hobby-top"><span>✍️</span><strong>Writing</strong></div><div class="hobby-sub">A spur-of-the-moment writer. Thoughts arrive unexpectedly and leave if not caught quickly, so they get written down (most times in the notes app). Sometimes it turns into something worth reading.</div></div>
+    </div>
+  </div>
+
+  <!-- Certifications -->
+  <div class="tab-panel" id="tab-certifications">
+    <div class="certs-grid">
+      <!--<div class="cert-card fu"><div class="cert-badge">📱</div><div class="cert-issuer">HubSpot Academy</div><h4>Digital Marketing Certification</h4><p>Certified across digital marketing fundamentals — SEO, content strategy, social media, email marketing, and analytics. A comprehensive grounding in modern digital practice.</p><a href="YOUR_HUBSPOT_DIGITAL_CERT_LINK" class="cert-link" target="_blank">View Credential ↗</a><div class="cert-year">Mar 2026 – Apr 2028</div></div>--!>
+      <div class="cert-card fu"><div class="cert-badge">📱</div><div class="cert-issuer">HubSpot Academy</div><h4>Social Media Marketing</h4><p>Certified in inbound social media strategy, content planning, engagement, and measuring social ROI.</p><a href="https://app-na2.hubspot.com/academy/achievements/h1vjnxbg/en/1/rasika-rajadhyaksha/social-media-marketing" class="cert-link" target="_blank">View Credential ↗</a><div class="cert-year">Oct 2025 – Nov 2027</div></div>
+      <!--<div class="cert-card fu"><div class="cert-badge">🗂️</div><div class="cert-issuer">Capgemini / NIIT Stackroute</div><h4>Informatica Teradata &amp; Tableau</h4><p>Professional training in Informatica Teradata and Tableau as part of Capgemini's formal technical upskilling programme — applied directly on live client pipelines.</p><a href="YOUR_INFORMATICA_CERT_LINK" class="cert-link" target="_blank">View Certificate ↗</a><div class="cert-year">2022–2023</div></div>
+      <div class="cert-card fu"><div class="cert-badge">🏆</div><div class="cert-issuer">MakeIntern · IIM Bangalore</div><h4>13th National B-Plan Championship</h4><p>Certificate of Achievement for active participation and entrepreneurial acumen at Unmaad, IIM Bangalore — Feb 23 &amp; 24, 2025.</p><a href="YOUR_BPLAN_CERT_LINK" class="cert-link" target="_blank">View Certificate ↗</a><div class="cert-year">February 2025</div></div>
+      <div class="cert-card fu"><div class="cert-badge">🌱</div><div class="cert-issuer">Seva Sahayog Foundation · VESIM</div><h4>Certificate of Excellence — Sell On</h4><p>Awarded for raising ₹22,800 and contributing 38 school kits towards quality education for underprivileged students through Sell On, MMS Batch 2024–26.</p><a href="YOUR_SEVASAHAYOG_CERT_LINK" class="cert-link" target="_blank">View Certificate ↗</a><div class="cert-year">2025</div></div> --!>
+    </div>
+    <!-- HOW TO ADD MORE CERTS: Copy the block below, paste it before the closing </div> above, and fill in your details -->
+    <!-- 
+    <div class="cert-card fu">
+      <div class="cert-badge">🎓</div>
+      <div class="cert-issuer">ISSUING ORGANISATION</div>
+      <h4>CERTIFICATE NAME</h4>
+      <p>Short description of what this certification covers and why it matters.</p>
+      <a href="YOUR_LINK_HERE" class="cert-link" target="_blank">View Certificate ↗</a>
+      <div class="cert-year">MONTH YEAR</div>
+    </div>
+    -->
+  </div>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section id="recommendations">
+  <div class="sec-head fu">
+    <div class="sec-label">Recent Recommendations</div>
+    <h2 class="sec-h2">In Their<br>Own Words</h2>
+  </div>
+  <div class="lor-grid">
+    <div class="lor-card fu">
+      <span class="lor-quote">"</span>
+      <div class="lor-text">
+        <!--<p>I am happy to recommend Rasika Rajadhyaksha, who worked with us as an Account Planning/Strategy Intern for a period of three months.</p>
+        <p>From the very beginning, Rasika stood out as a true team player. She quickly understood our ways of working and adapted seamlessly to the pace and expectations of the team. What was especially refreshing was the curiosity she brought to her work — she consistently asked thoughtful questions and showed genuine interest in understanding not just the "what," but the "why" behind strategic decisions.</p>
+        <p>During her time with us, Rasika worked across a wide range of brands and categories including personal care, automobile, food, and BFSI. She approached this diversity with enthusiasm and a willingness to help wherever needed.</p>--!>
+        <p>...Rasika is <strong>articulate and confident with words, bringing a creative lens to strategy — approaching briefs with originality</strong>. In brainstorming sessions, she often drew from her interest in culture and psychology, adding depth and fresh perspectives. She is <strong>sincere, curious, and driven</strong>. I recommend her without hesitation.</p>
+      </div>
+      <div class="lor-footer">
+        <div class="lor-sig">
+          <div class="lor-av av-mint">VO</div>
+          <div><div class="lor-name">Vishal Ostwal</div><div class="lor-role">Strategy Director · Contract Advertising, VML / WPP</div></div>
+        </div>
+        <a href="Vishal_LOR.pdf" class="lor-pdf-link" target="_blank">📄 View full LOR</a>
+      </div>
+    </div>
+    <div class="lor-card fu">
+      <span class="lor-quote">"</span>
+      <div class="lor-text">
+        <!--<p>It is a pleasure to recommend Rasika Rajadhyaksha, who worked with me as a Strategy Intern. During her time with us, Rasika consistently demonstrated exceptional diligence, intellectual curiosity, and a strong work ethic.</p>
+        <p>She approached every brief with sincerity and depth, asking the right questions and going beyond surface-level thinking to uncover meaningful insights.--!> ...Rasika was <strong>highly dependable, detail-oriented, and proactive</strong> in taking ownership of her tasks. What stood out most was <strong>her analytical sharpness</strong> combined with <strong>a genuine eagerness to learn</strong>...</p>
+        <!--<p>Beyond her individual contributions, Rasika was collaborative, articulate in her thinking, and brought a positive, grounded energy to the team. Her ability to balance structured strategic thinking with creative exploration makes her a strong asset to any organization. I strongly recommend her without reservation.</p>--!>
+      </div>
+      <div class="lor-footer">
+        <div class="lor-sig">
+          <div class="lor-av av-sage">BM</div>
+          <div><div class="lor-name">Bhavya Mathur</div><div class="lor-role">Senior Manager, Strategy &amp; Planning · VML Contract, WPP</div></div>
+        </div>
+        <a href="Bhavya_LOR.pdf" class="lor-pdf-link" target="_blank">📄 View full LOR</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <div class="sec-label">Get In Touch</div>
+      <h2>Let's <em>Talk</em></h2>
+      <p>Open to conversations about strategy, brands, data, or anything interesting. Drop a message and I'll get back to you.</p>
+      <div class="contact-info-items">
+        <div class="contact-info-item">
+          <div class="contact-info-icon">✉️</div>
+          <!--<div><div class="contact-info-label">Email</div><a href="/cdn-cgi/l/email-protection#df86908a8d809a929e969380979a8d9a" class="contact-info-value">rasika.rajadhyaksha05@gmail.com</a></div>--!>
+		  <div><div class="contact-info-label">Email</div><a href="mailto:rasika.rajadhyaksha05@gmail.com" class="contact-info-value">rasika.rajadhyaksha05@gmail.com</a></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">📍</div>
+          <div><div class="contact-info-label">Location</div><span class="contact-info-value">Mumbai, IN</span></div>
+        </div>
+      </div>
+      <div class="contact-socials">
+        <a href="https://linkedin.com/in/rasika-r-rajadhyaksha" class="social-btn" target="_blank" title="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="/cdn-cgi/l/email-protection#356c7a60676a7078747c796a7d706770" class="social-btn" title="Email">
+         <!-- <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+        </a>--!>
+		<a href="mailto:rasika.rajadhyaksha05@gmail.com" class="social-btn" title="Email">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+        </a>
+        <a href="resume.pdf" class="social-btn" target="_blank" title="Resume">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </a>
+      </div>
+    </div>
+    <!--<div class="contact-form-wrap">
+      <h3>Send a Message</h3>
+      <div id="contact-form">
+        <div class="form-row">
+          <div class="form-group"><label>Name</label><input type="text" id="f-name" placeholder="Your name"></div>
+          <div class="form-group"><label>Email</label><input type="email" id="f-email" placeholder="your@email.com"></div>
+        </div>
+        <div class="form-group"><label>Subject</label><input type="text" id="f-subject" placeholder="What's this about?"></div>
+        <div class="form-group"><label>Message</label><textarea id="f-message" rows="5" placeholder="Tell me what's on your mind..."></textarea></div>
+        <button class="form-submit" onclick="handleFormSubmit()">Send Message</button>
+      </div>
+      <div class="form-success" id="form-success">
+        <div class="check">✅</div>
+        <p style="color:var(--mint-l);font-size:1.1rem;font-weight:600;">Message sent!</p>
+        <p style="color:rgba(255,255,255,0.5);margin-top:0.5rem;font-size:0.88rem;">Thanks for reaching out — I'll get back to you soon.</p>
+      </div>
+    </div>--!>
+	<form id="contact-form" action="https://formspree.io/f/mqedowvp" method="POST">
+  <div class="form-row">
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" name="name" required placeholder="Your name">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" name="email" required placeholder="your@email.com">
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Subject</label>
+    <input type="text" name="subject" placeholder="What's this about?">
+  </div>
+  <div class="form-group">
+    <label>Message</label>
+    <textarea name="message" rows="5" required placeholder="Tell me what's on your mind..."></textarea>
+  </div>
+  <!--<button type="submit" class="form-submit">Send Message</button>--!>
+  <button type="submit" class="form-submit">Send Message</button>
+</form>
+  </div>
+</section>
+
+<footer>
+  <p>Crafted carefully · <span>Rasika Rajadhyaksha</span> · 2026</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// PARTICLE CANVAS — floating rings
+const canvas = document.getElementById('hero-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, rings;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = document.getElementById('hero').offsetHeight;
+}
+
+function initRings() {
+  rings = [];
+  const count = Math.floor((W * H) / 18000) + 8;
+  for (let i = 0; i < count; i++) {
+    rings.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 40 + 12,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      opacity: Math.random() * 0.3 + 0.08,
+      stroke: Math.random() > 0.5 ? '#7EC8A4' : '#5BAF8A',
+      lineW: Math.random() * 1.5 + 0.5,
+    });
+  }
+}
+
+function drawCanvas() {
+  ctx.clearRect(0, 0, W, H);
+  for (let i = 0; i < rings.length; i++) {
+    for (let j = i + 1; j < rings.length; j++) {
+      const dx = rings[i].x - rings[j].x;
+      const dy = rings[i].y - rings[j].y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 160) {
+        ctx.beginPath();
+        ctx.moveTo(rings[i].x, rings[i].y);
+        ctx.lineTo(rings[j].x, rings[j].y);
+        ctx.strokeStyle = 'rgba(91,175,138,' + (0.15 * (1 - d/160)) + ')';
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+    }
+  }
+  rings.forEach(function(ring) {
+    ctx.beginPath();
+    ctx.arc(ring.x, ring.y, ring.r, 0, Math.PI * 2);
+    ctx.strokeStyle = ring.stroke;
+    ctx.globalAlpha = ring.opacity;
+    ctx.lineWidth = ring.lineW;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    ring.x += ring.vx; ring.y += ring.vy;
+    if (ring.x < -ring.r) ring.x = W + ring.r;
+    else if (ring.x > W + ring.r) ring.x = -ring.r;
+    if (ring.y < -ring.r) ring.y = H + ring.r;
+    else if (ring.y > H + ring.r) ring.y = -ring.r;
+  });
+  requestAnimationFrame(drawCanvas);
+}
+
+resize(); initRings(); drawCanvas();
+window.addEventListener('resize', function() { resize(); initRings(); });
+
+// TAB SWITCHING
+//function switchTab(e, name) {
+  //document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  //document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+  //document.getElementById('tab-' + name).classList.add('active');
+  //e.target.classList.add('active');
+//}
+function switchTab(e, name) {
+  const panel = document.getElementById('tab-' + name);
+  const btn = e.target;
+  
+  // Toggle clicked panel
+  if (panel.classList.contains('active')) {
+    panel.classList.remove('active');
+    btn.classList.remove('active');
+  } else {
+    // Close all panels
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    // Open clicked panel
+    panel.classList.add('active');
+    btn.classList.add('active');
+  }
+}
+
+//view work samples
+function openModal() {
+  document.getElementById('workModal').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('workModal').classList.remove('show');
+}
+
+// CONTACT FORM
+//function handleFormSubmit() {
+//  var name    = document.getElementById('f-name').value.trim();
+//  var email   = document.getElementById('f-email').value.trim();
+//  var subject = document.getElementById('f-subject').value.trim();
+//  var message = document.getElementById('f-message').value.trim();
+//  if (!name || !email || !message) {
+//    alert('Please fill in your name, email and message.');
+//    return;
+//  }
+//  var mailto = 'mailto:rasika.rajadhyaksha05@gmail.com?subject=' + encodeURIComponent(subject || 'Portfolio Enquiry — ' + name) + '&body=' + encodeURIComponent('Hi Rasika,\n\n' + message + '\n\nBest,\n' + name + '\n' + email);
+//  window.location.href = mailto;
+//  document.getElementById('contact-form').style.display = 'none';
+//  document.getElementById('form-success').style.display = 'block';
+//}
+
+// SCROLL FADE
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.07 });
+document.querySelectorAll('.fu').forEach(function(el) { obs.observe(el); });
+
+//view work
+function showRequestModal() {
+  document.getElementById('requestModal').classList.add('show');
+}
+function closeRequestModal() {
+  document.getElementById('requestModal').classList.remove('show');
+}
+</script>
+<div id="workModal" class="modal" onclick="closeModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <h3>🔒 Work Samples</h3>
+    <p>Due to client confidentiality agreements, my work samples from agency experience are available upon request to verified inquiries. Please <a href="#contact" style="color:var(--mint-d);font-weight:600;">get in touch</a> to discuss specific projects.</p>
+  </div>
+</div>
+</body>
+</html>
